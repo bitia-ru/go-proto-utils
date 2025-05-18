@@ -14,18 +14,26 @@ func FetchEnvVariable(name string) string {
 	return value
 }
 
-func FetchEnvList(name string) []string {
+func FetchEnvList(name string, required bool) []string {
 	value := os.Getenv(name)
 	if value == "" {
-		panic(fmt.Sprintf("%s environment variable is required", name))
+		if required {
+			panic(fmt.Sprintf("%s environment variable is required", name))
+		} else {
+			return []string{}
+		}
 	}
 	return strings.Split(value, ",")
 }
 
-func FetchEnvMap(name string) map[string]string {
+func FetchEnvMap(name string, required bool) map[string]string {
 	value := os.Getenv(name)
 	if value == "" {
-		panic(fmt.Sprintf("%s environment variable is required", name))
+		if required {
+			panic(fmt.Sprintf("%s environment variable is required", name))
+		} else {
+			return map[string]string{}
+		}
 	}
 	pairs := strings.Split(value, ",")
 	result := make(map[string]string)
